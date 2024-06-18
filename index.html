@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Investment Suggestions and Returns</title>
+</head>
+<body>
+    <h1>Investment Suggestions</h1>
+    <p id="investmentSuggestion"></p>
+    <h1>Potential Returns</h1>
+    <p id="potentialReturns"></p>
+
+    <script>
+        let investment = parseInt(prompt("How much would you like to invest?"));
+
+        let average = [
+            ["Apple", 173.72, 12.57],
+            ["Microsoft", 417.32, 14.23],
+            ["Amazon", 174.48, 81.32],
+            ["Google", 148.48, 46.66],
+            ["Meta", 496.98, 147.99]
+        ];
+
+        let expensive = [
+            ["Berkshire Hathaway", 617880, 35.67],
+            ["NVR", 6466, 47.1],
+            ["Seaboard", 3768, -16.26],
+            ["Booking Holdings", 3110, 44.6],
+            ["Autozone", 2528, 36.16]
+        ];
+
+        let cheap = [
+            ["Alok Industries Ltd", 2.22, 130.2],
+            ["Inventure Growth Ltd", 0.20, 39.39],
+            ["Ajooni Biotech ", 4.85, 61.33],
+            ["Nyssa Corporation Ltd", 0.30, 84.62],
+            ["Advik Capital Services Ltd", 0.51, -18.75]
+        ];
+
+        function calculateReturns(stockInfo, investmentAmount) {
+            let returns = {};
+            stockInfo.forEach(stock => {
+                let stockName = stock[0];
+                let stockPrice = stock[1];
+                let ytdPercentage = stock[2];
+                let numStocks = investmentAmount / stockPrice;
+                let moneyReturned = numStocks * (stockPrice * (1 + (ytdPercentage / 100)) - stockPrice);
+                returns[stockName] = moneyReturned.toFixed(2);
+            });
+            return returns;
+        }
+
+        function suggestInvestment() {
+            let suggestion = "";
+            if (investment > 100000) {
+                suggestion = `Try investing in any of these companies: <br/>${expensive[0][0]}, ${expensive[1][0]}, ${expensive[2][0]}`;
+            } else if (investment > 100) {
+                suggestion = `Try investing in any of these companies: <br/>${average[0][0]}, ${average[1][0]}, ${average[2][0]}`;
+            } else if (investment < 100) {
+                suggestion = `Try investing in any of these companies: <br/>${cheap[0][0]}, ${cheap[1][0]}, ${cheap[2][0]}`;
+            }
+            document.getElementById("investmentSuggestion").innerHTML = suggestion;
+        }
+
+        function moneyDecider() {
+            let returns = calculateReturns(expensive, investment);
+            let resultHTML = "";
+            for (let stock in returns) {
+                resultHTML += `If you invested in ${stock} last year, you would have made a profit of $${returns[stock]}<br/>`;
+            }
+            document.getElementById("potentialReturns").innerHTML = resultHTML;
+        }
+
+        suggestInvestment();
+        moneyDecider();
+    </script>
+</body>
+</html>
+
